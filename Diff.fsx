@@ -1,5 +1,6 @@
 #if INTERACTIVE
 #time
+open DiffSharp.AD.Float32
 #endif
 
 #I "../packages/DiffSharp/lib/net46/"
@@ -19,7 +20,15 @@ module Playground =
 
     let rnd = Random ( DateTime.Now.Millisecond )
 
-    let v =  DV [| float (rnd.Next()) ; float (rnd.Next()); |] // v1, v2
+    let ε = D 1.0e-6
+    let checkδ p1 p2 =
+        abs (p1 - p2) |> DV.toArray |> Array.fold (+) (D 0.) |>
+        function
+            | d when d < ε -> true
+            | d -> failwithf "DELTA over! %A" d
+
+
+    let inXY =  DV [| float (rnd.Next()) ; float (rnd.Next()); |] // v1, v2
 
     let convPolarCartesian (rθ:DV) =
         let cosθ = cos (rθ.[1])
@@ -36,12 +45,29 @@ module Playground =
 
     let jac1, jac2 = jacobian convPolarCartesian, jacobian convCartesianPolar
 
-    let ``conversionAlmostWorks?`` = (v |> convCartesianPolar |> convPolarCartesian) - v |> DV.toArray |> Array.fold (+) (D 0.) < D 1.0e-10
+    let ``conversionAlmostWorks?`` = (inXY |> convCartesianPolar |> convPolarCartesian) |> checkδ inXY
 
-    let RJ1', RJ2' = v |> convCartesianPolar |> jac1, v |> jac2
+    let inrθ = inXY |> convCartesianPolar
+
+    let RJ1', RJ2' = inrθ |> jac1, inXY |> jac2
 
     let jacobianProduct = RJ2' * RJ1'
 
     let identity n = DM.init n n ( fun i j -> if i = j then 1. else 0. )
 
-    let ``jacobianProductIsAlmostIdentity?`` = jacobianProduct - identity 2 |> DM.det < D 1.0e-10
+    let ``jacobianProductIsAlmostIdentity?`` =
+        jacobianProduct - identity 2 |> DM.det < ε
+
+    let reverseEverything =
+        function inrθ -> ( (jac1 inrθ) |> DM.transpose |> DM.Inverse ) * inrθ
+
+    let ``backinxy?`` = reverseEverything inrθ |> checkδ inXY
+
+    let makeItpRETTY =
+        function
+            | true -> printfn "--> IS THIS OK?"
+            | false -> printfn "Welp..."
+
+    [ ``conversionAlmostWorks?``; ``jacobianProductIsAlmostIdentity?``; ``backinxy?`` ]
+    |> List.forall id
+    |> makeItpRETTY
