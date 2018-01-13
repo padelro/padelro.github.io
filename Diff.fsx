@@ -1,6 +1,5 @@
 #if INTERACTIVE
 #time
-open DiffSharp.AD.Float32
 #endif
 
 #I "../packages/DiffSharp/lib/net46/"
