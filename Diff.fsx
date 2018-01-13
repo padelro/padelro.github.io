@@ -17,17 +17,7 @@ module Playground =
     open DiffSharp.AD.Float64
     open DiffSharp.Util
 
-    let rnd = Random ( DateTime.Now.Millisecond )
-
     let ε = D 1.0e-6
-    let checkδ p1 p2 =
-        abs (p1 - p2) |> DV.toArray |> Array.fold (+) (D 0.) |>
-        function
-            | d when d < ε -> true
-            | d -> failwithf "DELTA over! %A" d
-
-
-    let inXY =  DV [| float (rnd.Next()) ; float (rnd.Next()); |] // v1, v2
 
     let convPolarCartesian (rθ:DV) =
         let cosθ = cos (rθ.[1])
@@ -42,31 +32,49 @@ module Playground =
 
         DV.ofArray [| sqrt (x * x + y * y) ; atan (y / x) |]
 
-    let jac1, jac2 = jacobian convPolarCartesian, jacobian convCartesianPolar
-
-    let ``conversionAlmostWorks?`` = (inXY |> convCartesianPolar |> convPolarCartesian) |> checkδ inXY
-
-    let inrθ = inXY |> convCartesianPolar
-
-    let RJ1', RJ2' = inrθ |> jac1, inXY |> jac2
-
-    let jacobianProduct = RJ2' * RJ1'
-
-    let identity n = DM.init n n ( fun i j -> if i = j then 1. else 0. )
-
-    let ``jacobianProductIsAlmostIdentity?`` =
-        jacobianProduct - identity 2 |> DM.det < ε
-
-    let reverseEverything =
-        function inrθ -> ( (jac1 inrθ) |> DM.transpose |> DM.Inverse ) * inrθ
-
-    let ``backinxy?`` = reverseEverything inrθ |> checkδ inXY
+    let checkδ p1 p2 =
+        abs (p1 - p2) |> DV.toArray |> Array.fold (+) (D 0.) |>
+        function
+            | d when d < ε -> true
+            | d -> failwithf "DELTA over! %A" d
 
     let makeItpRETTY =
         function
-            | true -> printfn "--> IS THIS OK?"
-            | false -> printfn "Welp..."
+            | true -> printfn "%s" "\u00AF\\_(\u30C4)_/\u00AF"
+            | false -> printfn "%s" "\u0028\u256F\u00B0\u25A1\u00B0\u0029\u256F\uFE35\u0020\u253B\u2501\u253B"
 
-    [ ``conversionAlmostWorks?``; ``jacobianProductIsAlmostIdentity?``; ``backinxy?`` ]
-    |> List.forall id
-    |> makeItpRETTY
+    let testThisOneBillionTimes () =
+
+        let rnd = Random ( DateTime.Now.Millisecond )
+
+        let inXY =  DV [| float (rnd.Next()) ; float (rnd.Next()); |] // v1, v2
+
+        let jac1, jac2 = jacobian convPolarCartesian, jacobian convCartesianPolar
+
+        let ``conversionAlmostWorks?`` = (inXY |> convCartesianPolar |> convPolarCartesian) |> checkδ inXY
+
+        let inrθ = inXY |> convCartesianPolar
+
+        let RJ1', RJ2' = inrθ |> jac1, inXY |> jac2
+
+        let jacobianProduct = RJ2' * RJ1'
+
+        let identity n = DM.init n n ( fun i j -> if i = j then 1. else 0. )
+
+        let ``jacobianProductIsAlmostIdentity?`` =
+            jacobianProduct - identity 2 |> DM.det < ε
+
+        let reverseEverything =
+            function inrθ -> ( (jac1 inrθ) |> DM.transpose |> DM.Inverse ) * inrθ
+
+        let ``backinxy?`` = reverseEverything inrθ |> checkδ inXY
+
+        [ ``conversionAlmostWorks?``; ``jacobianProductIsAlmostIdentity?``; ``backinxy?`` ]
+        |> List.forall id
+
+
+    let max = 1_000_000
+
+    [1..max] |> List.fold ( fun s run ->
+        ( if run % 50000 = 0 then printfn "%A%%" ( float run * (100. / float max) ) )
+        testThisOneBillionTimes() && s) true |> makeItpRETTY
