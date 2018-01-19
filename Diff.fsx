@@ -84,4 +84,4 @@ module Playground =
         let y0 = float (rnd.Next())
         testThisOneBillionTimes(x0, y0) && s) true |> makeItpRETTY
 
-    printfn "What next?"
+(* eof *)
