@@ -3,8 +3,8 @@
 #endif
 
 #if INTERACTIVE
-#I "../packages/DiffSharp/lib/net46/"
-#I "../packages/DiffSharp/build/"
+#I "./packages/DiffSharp/lib/net46/"
+#I "./packages/DiffSharp/build/"
 #r "DiffSharp.dll"
 #endif
 
@@ -12,7 +12,7 @@ open System
 open System.IO
 
 Environment.SetEnvironmentVariable("Path",
-    Environment.GetEnvironmentVariable("Path") + ";" + Path.Combine(__SOURCE_DIRECTORY__,@"../packages/DiffSharp/build/"))
+    Environment.GetEnvironmentVariable("Path") + ";" + Path.Combine(__SOURCE_DIRECTORY__,@"./packages/DiffSharp/build/"))
 
 [<Measure>]
 type deg
@@ -23,7 +23,7 @@ let toDeg (angle:float):float<deg> = angle * 1.<deg>
 let radToDeg (rad: float<rad>) = rad * 180.<deg> / (Math.PI * 1.<rad>) // oh, come on...
 let degToRad (deg: float<deg>) = deg * (Math.PI * 1.<rad>) / 180.<deg>
 
-#load "../packages/FSharp.Charting/lib/net45/FSharp.Charting.fsx"
+#load "./packages/FSharp.Charting/lib/net45/FSharp.Charting.fsx"
 
 module Playground =
 

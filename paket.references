@@ -1,0 +1,9 @@
+FSharp.Core
+Newtonsoft.Json
+FsPickler
+FsPickler.Json
+
+MathNet.Numerics
+MathNet.Numerics.FSharp
+DiffSharp
+FSharp.Charting

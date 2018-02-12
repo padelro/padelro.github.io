@@ -3,8 +3,8 @@
 #endif
 
 #if INTERACTIVE
-#I "../packages/DiffSharp/lib/net46/"
-#I "../packages/DiffSharp/build/"
+#I "./packages/DiffSharp/lib/net46/"
+#I "./packages/DiffSharp/build/"
 #r "DiffSharp.dll"
 #endif
 
@@ -12,7 +12,7 @@ open System
 open System.IO
 
 Environment.SetEnvironmentVariable("Path",
-    Environment.GetEnvironmentVariable("Path") + ";" + Path.Combine(__SOURCE_DIRECTORY__,@"../packages/DiffSharp/build/"))
+    Environment.GetEnvironmentVariable("Path") + ";" + Path.Combine(__SOURCE_DIRECTORY__,@"./packages/DiffSharp/build/"))
 
 module Playground =
 
