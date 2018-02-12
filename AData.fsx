@@ -59,6 +59,7 @@ let fObj object1 object2 =
     let m1, m2, pos1, pos2 =
         object1.mass, object2.mass,
         object1.pos, object2.pos
+
     f m1 m2 pos1 pos2
 
 let updateWorld world _ =
@@ -105,6 +106,7 @@ let text (pos: DV) line text (graphics: Graphics)  =
     let x, y = float pos.[0], float pos.[1]
     use fontS = new Font( new FontFamily("Operator Mono Medium"), 8.0f ) // (!)
     let offsetX, offsetY = 30.f, 5.0f
+
     graphics.DrawString(
         sprintf "%s" text,
         fontS,
@@ -117,6 +119,7 @@ let drawEon t (graphics: Graphics) =
     let x, y = 10.0f, 0.0f
     use fontS = new Font( FontFamily.GenericMonospace, 8.0f )
     let offsetX, offsetY = 10.f, 10.0f
+
     graphics.DrawString(
         sprintf "t: %i" t,
         fontS,
@@ -166,6 +169,7 @@ let drawField world graphics =
             )
         )
     ] |> ignore
+
 let drawWorld world time (graphics: Graphics) =
     graphics |> drawEon time |> drawField world
     world |> List.iter ( drawObj >> (fun drawWith -> drawWith graphics) )
@@ -254,11 +258,11 @@ let universe =
                                 ; v = v'
                                 ; acc = acc'
                                 ;   f = force }
-                        )
+                    )
 
                 Some ( (newWorld, t), (forces, newWorld, t + 1L) )
-            )
-        ) ( sObjs |> List.map ( fun _ -> DV.zeroCreate 2 ), sObjs , 0L )
+        )
+    )
 
 
 type DrawForm() as x =
@@ -306,7 +310,8 @@ let _program =
             let time = knob.Value
 
             let world, tt =
-                universe |> Seq.skip time |> Seq.take 1 |> Seq.exactlyOne // just to make sure
+                ( sObjs |> List.map ( fun _ -> DV.zeroCreate 2 ), sObjs , 0L )
+                |> universe |> Seq.skip time |> Seq.take 1 |> Seq.exactlyOne // just to make sure
 
             graphics |> drawWorld world tt |> fun _ -> buffer.Render()
         )
