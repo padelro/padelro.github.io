@@ -31,7 +31,7 @@ let gridParams world =
     let rnd0 = Random(world.seed)
     let gen = fun () -> rnd0.NextDouble()
 
-    let cellSize, cellSpacing = 66, 22
+    let cellSize, cellSpacing = 70, 44
     let margin = 150
 
     let gridSizeX = (w - margin*2) / ( cellSize + cellSpacing )
@@ -52,11 +52,11 @@ let gridParams world =
 
 let eggshell, darkGunmetal, teaGreen, vividTangerine, englishVermillion, naColor =
     let hexColor = Drawing.ColorTranslator.FromHtml
-    hexColor "#EEF4D4",
-    hexColor "#1C2826",
-    hexColor "#DAEFB3",
-    hexColor "#EA9E8D",
-    hexColor "#d64550",
+    hexColor "#78AF9F",
+    hexColor "#C13F21",
+    hexColor "#D36E2D",
+    hexColor "#DDA032",
+    hexColor "#659CC8",
     hexColor "#000000"
 
 let showDrwaingGrid gridParams (graphics: Graphics) =
@@ -192,7 +192,7 @@ let pickOneOf valuesWithDistribution gen acc =
 
 let genShape (point: Point) gridParams gen =
     let rotation = ( Math.PI * 2./5. * gen() )
-    let theta n = Math.PI * 2. * float n/5. + rotation
+    let theta n = Math.PI * 2. * float n*10./25. + rotation
     let x n = cos (theta n) * float gridParams.cellSize/2. |> int
     let y n = sin (theta n) * float gridParams.cellSize/2. |> int
 
@@ -217,8 +217,8 @@ let genShapeFromOrigin (origin: Point) =
 
         let originPoint =
             Point(
-                d.margin + d.offsetX/2 + origin.X * ( d.cellSize + d.cellSpacing ) + 2 * d.cellSpacing,
-                d.margin + d.offsetY/2 + origin.Y * ( d.cellSize + d.cellSpacing ) + 2 * d.cellSpacing
+                d.margin + d.offsetX/2 + origin.X * ( d.cellSize + d.cellSpacing ) + d.cellSpacing / 2 + d.cellSize / 2,
+                d.margin + d.offsetY/2 + origin.Y * ( d.cellSize + d.cellSpacing ) + d.cellSpacing / 2 + d.cellSize / 2
             )
 
         genShape originPoint gridParams gen
@@ -333,7 +333,7 @@ let program =
             graphics.Clear(Color.WhiteSmoke)
 
             let seed = knob.Value
-            let size = 44 * 22
+            let size = 7 * 34
 
             let world =
                 { width = form.ClientSize.Width
