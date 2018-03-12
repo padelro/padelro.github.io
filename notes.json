@@ -1,0 +1,17 @@
+{
+    "Items": [
+        {
+            "Id": 2,
+            "Evt": "NEW",
+            "Date": "2018-02-04T17:39:28.8447439Z",
+            "Data": { "Case": "Text", "Fields": ["Text Db entry #1"] }
+        },
+        {
+            "Id": 1,
+            "Evt": "INIT",
+            "Date": "2018-02-04T17:36:39.8949226Z",
+            "Data": { "Case": "None" }
+        }
+    ],
+    "State": { "Case": "Closed" }
+}
