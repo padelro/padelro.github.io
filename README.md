@@ -13,3 +13,7 @@
 ![Play8](./adata/s3.png "g3")
 
 ![Play9](./adata/1522613678875.gif "zeros")
+![Play9](./adata/1522613678875_2.gif "zeros2")
+
+![Play10](./adata/capture/Clock_high.gif "clock_h")
+![Play10](./adata/capture/Clock_low.gif "clock_l")
