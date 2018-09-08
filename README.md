@@ -17,3 +17,9 @@
 
 ![Play10](./adata/capture/Clock_high.gif "clock_h")
 ![Play10](./adata/capture/Clock_low.gif "clock_l")
+
+## Dummy build:
+
+    dotnet tool install --global fake-cli
+
+    fake run .\build.fsx

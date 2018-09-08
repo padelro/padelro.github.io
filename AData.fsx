@@ -34,7 +34,7 @@ let δxy (pos1: DV) (pos2: DV) =
     let δy = y2 - y1
     δx, δy
 
-let δ δx δy=
+let δ δx δy =
     sqrt ( pown δx 2 + pown δy 2 )
 
 let f (m1: D) (m2: D) (x: DV) (y: DV) =
@@ -102,9 +102,9 @@ let force (pos: DV) (v: DV) (graphics: Graphics) =
         )
     graphics
 
-let text (pos: DV) line text (graphics: Graphics)  =
+let text (pos: DV) line text (graphics: Graphics) =
     let x, y = float pos.[0], float pos.[1]
-    use fontS = new Font( new FontFamily("Operator Mono Medium"), 8.0f ) // (!)
+    use fontS = new Font( new FontFamily("Iosevka"), 8.0f ) // (!)
     let offsetX, offsetY = 30.f, 5.0f
 
     graphics.DrawString(
@@ -270,7 +270,7 @@ type DrawForm() as x =
     do
         x.SetStyle(ControlStyles.OptimizedDoubleBuffer, true)
 
-let _program =
+let _ =
 
     let ctx = BufferedGraphicsManager.Current
     let knob =

@@ -4,6 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net461</TargetFramework>
     <DebugType>portable</DebugType>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -252,7 +252,7 @@ let fillScreen world (color: Color) (graphics: Graphics) =
 
 let drawSeed seed (graphics: Graphics) =
     let x, y = 10.0f, 0.0f
-    use fontS = new Font( new FontFamily("Operator Mono Medium"), 8.0f )
+    use fontS = new Font( new FontFamily("Iosevka"), 8.0f )
     let offsetX, offsetY = 2.f, 2.0f
     graphics.DrawString(
         sprintf "Seed: %i" seed,
@@ -303,7 +303,7 @@ let tick world (graphics: Graphics) =
     |> drawSeed world.seed
     |> showDrwaingGrid gridParams
 
-let program =
+let _ =
     let ctx = BufferedGraphicsManager.Current
 
     let knob =
