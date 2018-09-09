@@ -8,7 +8,7 @@ Setting this whole thing up:
 
 - .NET Core and Fake CLI installed -> FAKE runs on .NET Core
 - A build task that uses a .NET 4.6 library -> Fsharp.Formating runs on .NET 4.6
-- Fake runs `build.fsx` which uses `fsi` with NetStandard to load and execute `build_internal.fsx` and uses Fsharp.Formating
+- Fake runs `build.fsx` which uses `fsi` with NetStandard to load and execute `build_internal.fsx` (which uses Fsharp.Formating)
 
 *)
 
