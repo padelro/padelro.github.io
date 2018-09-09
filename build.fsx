@@ -15,7 +15,7 @@ Setting this whole thing up:
 (*** include: build_internal ***)
 
 (**
-If one of the "other" dependencies do not exist, everything fails...
+If one of the "other" dependencies does not exist, everything fails...
 
 ![Build dependencies](../adata/build_stuff.png "build_0")
 *)
