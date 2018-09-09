@@ -20,4 +20,4 @@
 
 ## Dummy build:
 
-[Docs](./build/build.html)
+[Docs](https://padelro.github.io/build/build.html)
