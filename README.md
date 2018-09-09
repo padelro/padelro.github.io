@@ -20,6 +20,4 @@
 
 ## Dummy build:
 
-    dotnet tool install --global fake-cli
-
-    fake run .\build.fsx
+[Docs](./build/build.html)
