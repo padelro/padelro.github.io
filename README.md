@@ -18,7 +18,7 @@
 ![Play10](./adata/capture/Clock_high.gif "clock_h")
 ![Play10](./adata/capture/Clock_low.gif "clock_l")
 
-![PlayDX](./adata/MSAA4x.png "msaa4x_dx12")
+![PlayDX](./adata/MSAA4x_DX12.png "msaa4x_dx12")
 
 ## Dummy build:
 
