@@ -20,6 +20,8 @@
 
 ![PlayDX](./adata/MSAA4x_DX12.png "msaa4x_dx12")
 
+![Cap0](./adata/Cap0.gif "Cap_")
+
 ## Dummy build:
 
 [Docs](https://padelro.github.io/build/build.html)
