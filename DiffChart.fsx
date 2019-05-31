@@ -23,7 +23,9 @@ let toDeg (angle:float):float<deg> = angle * 1.<deg>
 let radToDeg (rad: float<rad>) = rad * 180.<deg> / (Math.PI * 1.<rad>) // oh, come on...
 let degToRad (deg: float<deg>) = deg * (Math.PI * 1.<rad>) / 180.<deg>
 
-#load "./packages/FSharp.Charting/lib/net45/FSharp.Charting.fsx"
+// #load "./packages/FSharp.Charting/lib/net45/FSharp.Charting.fsx" // TODO: breaking change
+#I "./packages/FSharp.Charting/lib/net45/"
+#r "FSharp.Charting.dll"
 
 module Playground =
 
@@ -148,6 +150,8 @@ module Playground =
                             l2 |> List.map ( fun e -> ( float e.[1] * 4.e+11, (float e.[0] |> toDeg) * 1.e-2 ) ) |> Chart.Point
                         ]
                     Chart.Combine ( (xyPoints @ rθPoints) ) // |> List.map ( fun chart -> chart :> ChartTypes.GenericChart ) )
+
+    do run |> Chart.Show
 
     printfn "What next?"
 

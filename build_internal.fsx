@@ -15,4 +15,6 @@ let source = __SOURCE_DIRECTORY__
 let template = Path.Combine(source, "./template.html")
 let script = Path.Combine(source, "./build.fsx")
 
-Literate.ProcessScriptFile(script, template, "./build/build.html", generateAnchors = false, includeSource  = false)
+let output = Literate.ProcessScriptFile(script, template, OutputKind.Html, generateAnchors = false, includeSource  = false)
+//let outFile = "./build/build.html"
+// TODO: breaking change

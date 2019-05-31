@@ -30,5 +30,5 @@ let combine path1 (path2, data) =
         |> FileInfo
         |> crop
         |> combine _out
-        |> File.WriteAllBytes
+        //|> File.WriteAllBytes
 ]

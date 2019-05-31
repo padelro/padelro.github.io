@@ -53,12 +53,13 @@ Target.create "BuildApp" (fun _ ->
 )
 
 
-(*** define: build_internal***)
+(*** define: build_internal ***)
 Target.create "Literate" (fun _ ->
     let script = "build_internal.fsx"
     let (exitcode, msgs) =
         Fsi.exec (fun p ->
-            { p with TargetProfile = Fsi.Profile.NetStandard }
+            { p with TargetProfile = Fsi.Profile.NetStandard
+                     Fsi.ToolPath  = Fsi.FsiTool.External "c:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/FSharp/fsiAnyCpu.exe" }
             |> Process.setEnvironmentVariable "__X_TEMP__" "zero"
         ) script [ "_x_arg_" ]
 
@@ -78,7 +79,8 @@ open Fake.Core.TargetOperators
 "Clean" ==> "Literate"
 
 // Start build
-Target.runOrDefault "All"
+//Target.runOrDefault "All"
+Target.runOrDefault "Literate"
 
 (**
 All done!
