@@ -22,6 +22,11 @@
 
 ![Cap0](./adata/Cap0.gif "Cap_")
 
+![GammaHills](./adata/GammaHills.png "GammaHills")
+
+![Alice](./adata/alice.png "Alice")
+![You_are_here](./adata/you_are_here.png "DeepMind")
+
 ## Dummy build:
 
 [Docs](https://padelro.github.io/build/build.html)
