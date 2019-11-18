@@ -1,5 +1,5 @@
 source https://api.nuget.org/v3/index.json
-framework: >= net472
+framework: netcoreapp3.0
 
 nuget FSharp.Core
 nuget Newtonsoft.Json
@@ -10,6 +10,7 @@ nuget MathNet.Numerics.FSharp
 nuget DiffSharp
 nuget FSharp.Charting
 nuget FSharp.Formatting
+nuget Aether
 
 group Build
     source https://api.nuget.org/v3/index.json
