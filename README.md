@@ -29,6 +29,15 @@
 
 ![At3](./adata/At3.png "At3")
 
+    --> Timing now on
+
+    Real: 00:02:59.053, CPU: 00:15:42.562, GC gen0: 45647, gen1: 1647, gen2: 5
+    val it : unit = ()
+
+    --> Timing now off
+
+![Moons](./adata/smoons.png "smoons")
+
 ## Dummy build:
 
 [Docs](https://padelro.github.io/build/build.html)
