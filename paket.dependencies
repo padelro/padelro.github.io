@@ -1,5 +1,6 @@
 source https://api.nuget.org/v3/index.json
 framework: netcoreapp3.0
+generate_load_scripts: true
 
 nuget FSharp.Core
 nuget Newtonsoft.Json
@@ -11,13 +12,18 @@ nuget DiffSharp
 nuget FSharp.Charting
 nuget FSharp.Formatting
 nuget Aether
+nuget FSharpPlus
+nuget FSharpx.Extras
+nuget FSharpx.Collections
+nuget FSharp.Collections.ParallelSeq
 
 group Build
+    storage: none
     source https://api.nuget.org/v3/index.json
-    framework: >= netstandard2.0
 
     nuget FSharp.Core
-    nuget Fake.IO.FileSystem
+    nuget Fake.Core.Target
     nuget Fake.DotNet.Cli
     nuget Fake.DotNet.Fsi
-    nuget Fake.Core.Target
+    nuget Fake.DotNet.Paket
+    nuget Fake.IO.FileSystem

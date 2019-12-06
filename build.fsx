@@ -22,7 +22,7 @@ If one of the "other" dependencies does not exist, everything fails...
 
 (*** hide ***)
 
-#r "paket: groupref Build"
+#r "paket: groupref Build //"
 #load "./.fake/build.fsx/intellisense.fsx"
 
 open Fake.Core
@@ -40,7 +40,7 @@ let buildDebug =
 
 // Targets
 Target.create "Clean" (fun _ ->
-    Shell.cleanDir buildDir // nothing there
+    //Shell.cleanDir buildDir // nothing there
 
     !!"./**/*.fsproj"
     |> Seq.map (DotNet.exec id "clean")
@@ -58,8 +58,9 @@ Target.create "Literate" (fun _ ->
     let script = "build_internal.fsx"
     let (exitcode, msgs) =
         Fsi.exec (fun p ->
-            { p with TargetProfile = Fsi.Profile.NetStandard
-                     Fsi.ToolPath  = Fsi.FsiTool.External "c:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/FSharp/fsiAnyCpu.exe" }
+            { p with
+                TargetProfile = Fsi.Profile.NetStandard
+                Fsi.ToolPath  = Fsi.FsiTool.External "c:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/FSharp/fsiAnyCpu.exe" }
             |> Process.setEnvironmentVariable "__X_TEMP__" "zero"
         ) script [ "_x_arg_" ]
 
@@ -79,8 +80,8 @@ open Fake.Core.TargetOperators
 "Clean" ==> "Literate"
 
 // Start build
-//Target.runOrDefault "All"
-Target.runOrDefault "Literate"
+Target.runOrDefault "All"
+//Target.runOrDefault "Literate"
 
 (**
 All done!

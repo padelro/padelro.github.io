@@ -8,3 +8,8 @@ MathNet.Numerics.FSharp
 DiffSharp
 FSharp.Charting
 Aether
+
+FSharpPlus
+FSharpx.Extras
+FSharpx.Collections
+FSharp.Collections.ParallelSeq
