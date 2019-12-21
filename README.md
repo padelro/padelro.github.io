@@ -37,6 +37,7 @@
     --> Timing now off
 
 ![Moons](./adata/smoons.png "smoons")
+![Mandelbrot_txt](./adata/mandelbrot_txt.png "Mandelbrot_txt")
 
 ## Dummy build:
 
