@@ -7,9 +7,7 @@
 ![Play4](./adata/out/eon9002.png "9002")
 ![Play5](./adata/out/eon9003.png "9003")
 
-![Play6](./adata/s1.png "g1")
 ![Play7](./adata/s2.png "g2")
-![Play8](./adata/s3.png "g3")
 
 ![Play9](./adata/1522613678875.gif "zeros")
 ![Play9](./adata/1522613678875_2.gif "zeros2")
