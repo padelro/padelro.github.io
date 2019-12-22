@@ -3,7 +3,6 @@
 &lambda; ( [url](https://padelro.github.io/) )
 
 ![Play1](./adata/out/eon1.png "1")
-![Play2](./adata/out/eon4.png "4")
 ![Play3](./adata/out/eon9000.png "9000")
 ![Play4](./adata/out/eon9002.png "9002")
 ![Play5](./adata/out/eon9003.png "9003")
@@ -38,6 +37,7 @@
 
 ![Moons](./adata/smoons.png "smoons")
 ![Mandelbrot_txt](./adata/mandelbrot_txt.png "Mandelbrot_txt")
+![Moons_C](./adata/smoons_continuum.gif "smoons_continuum")
 
 ## Dummy build:
 
