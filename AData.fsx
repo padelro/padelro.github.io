@@ -271,8 +271,6 @@ type DrawForm() as x =
         x.SetStyle(ControlStyles.OptimizedDoubleBuffer, true)
 
 let _ =
-
-    let ctx = BufferedGraphicsManager.Current
     let knob =
         new TrackBar(
             TickFrequency = 50
@@ -292,27 +290,29 @@ let _ =
     form.Controls.Add knob
 
     let view = async {
+        use graphics = Graphics.FromHwnd(form.Handle)
+        let ctx = BufferedGraphicsManager.Current
+        use buffer = ctx.Allocate( graphics, form.DisplayRectangle )
+        let graphics = buffer.Graphics
+        graphics.SmoothingMode <- SmoothingMode.HighSpeed
+
+        knob.ValueChanged.Add (
+            fun _ ->
+                
+                graphics.Clear(Color.WhiteSmoke)
+
+                let time = knob.Value
+
+                let world, tt =
+                    ( sObjs |> List.map ( fun _ -> DV.zeroCreate 2 ), sObjs , 0L )
+                    |> universe |> Seq.skip time |> Seq.take 1 |> Seq.exactlyOne // just to make sure
+
+                graphics |> drawWorld world tt |> fun _ -> buffer.Render()
+            )
+
         let dResult = form.ShowDialog()
         let! endDialog = (Task.FromResult dResult) |> Async.AwaitTask
         return endDialog
     }
 
     view |> Async.StartAsTask |> Async.AwaitTask |> ignore
-
-    knob.ValueChanged.Add (
-        fun _ ->
-            use graphics = Graphics.FromHwnd(form.Handle)
-            use buffer = ctx.Allocate( graphics, form.DisplayRectangle )
-            let graphics = buffer.Graphics
-            graphics.SmoothingMode <- SmoothingMode.HighSpeed
-            graphics.Clear(Color.WhiteSmoke)
-
-            let time = knob.Value
-
-            let world, tt =
-                ( sObjs |> List.map ( fun _ -> DV.zeroCreate 2 ), sObjs , 0L )
-                |> universe |> Seq.skip time |> Seq.take 1 |> Seq.exactlyOne // just to make sure
-
-            graphics |> drawWorld world tt |> fun _ -> buffer.Render()
-        )
-    ()

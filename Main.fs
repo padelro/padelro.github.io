@@ -5,6 +5,9 @@ open System.Drawing
 open System.Drawing.Drawing2D
 open System.Drawing.Text
 open System.Diagnostics
+open System.Reflection
+open System.Runtime.Versioning
+open System.Runtime.InteropServices
 
 type DxForm(size: int * int) as __ =
     inherit Form(Text = "Main")
@@ -77,8 +80,8 @@ let main argv =
     use g = bg.Graphics
     do g.SmoothingMode <- SmoothingMode.HighQuality
 
-    use font = new Font("Victor Mono", 12.f)
-    use fontS = new Font("Victor Mono", 10.f, FontStyle.Italic)
+    use font = new Font("Elementa", 12.f)
+    use fontS = new Font("Elementa", 10.f, FontStyle.Italic)
     use brush = new SolidBrush(Color.FromArgb(255, 25, 25, 25))
 
     let ttt = 8
@@ -144,7 +147,6 @@ let main argv =
             )
         )
 
-        /// # Draw the vecs here
         do drawGrid (ox, oy)
 
         model.case |> function
@@ -156,19 +158,19 @@ let main argv =
             do drawBiV (uv |> snd) Color.DarkOliveGreen 1.f
 
         | 2 ->
-            let ``a∥`` = project model.a model.b
-            let ``a⟂`` = reject model.a model.b
-            let a' = model.a - ``a∥``
+            let ``a||`` = project model.a model.b
+            let ``a|_`` = reject model.a model.b
+            let a' = model.a - ``a||``
 
             let ``a reflectd b`` = reflect model.a model.b
             let ``c rotated a b`` = rotate model.c model.a model.b
 
             do drawV model.a Color.LightSeaGreen 2.f (nameof model.a)
             do drawV model.b Color.Blue 2.f (nameof model.b)
-            do drawV ``a∥`` Color.Yellow 6.f (nameof ``a∥``)
+            do drawV ``a||`` Color.Yellow 6.f (nameof ``a||``)
             do drawV ~~model.b Color.DeepPink 4.f ("-" + nameof model.b)
             do drawV a' Color.DarkTurquoise 6.f String.Empty
-            do drawV ``a⟂`` Color.Green 2.f (nameof ``a⟂``)
+            do drawV ``a|_`` Color.Green 2.f (nameof ``a|_``)
             do drawBiV (model.a |^ model.b) Color.HotPink 1.f
 
             do drawV model.c Color.Black 4.f (nameof model.c)
@@ -252,4 +254,8 @@ let main argv =
     do w.ShowDialog() |> ignore
     bs |> Array.iter(fun o -> (o :> IDisposable).Dispose())
     printfn "Hello World from F#! [%A]" DateTime.Now
+
+    let framework = Assembly.GetEntryAssembly().GetCustomAttribute<TargetFrameworkAttribute>().FrameworkName
+    printfn "%A" (RuntimeInformation.OSDescription, framework)
+
     0 // return an integer exit code
