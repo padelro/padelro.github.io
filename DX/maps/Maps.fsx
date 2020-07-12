@@ -141,7 +141,6 @@ let ``Test projection: Hammer ==> Cylindrical`` (sourceImageFile, destImageFile:
 
     use testBmp = new Bitmap(Image.FromStream(new MemoryStream(data)))
     use b = new Bitmap(w, h)
-    let aspectRatio = float w / float h
 
     for x in 0 .. w-1 do
         for y in 0 .. h-1 do
@@ -180,8 +179,7 @@ let convert_cube_uv_to_xyz (index, u, v) =
 let ``Test projection: Cylindrical ==> CubeMap`` (sourceImageFile: string) =
     use testBmp = new Bitmap(sourceImageFile)
     let (w, h) = testBmp.Width, testBmp.Height
-    // let aspectRatio = float w / float h
-
+    
     let rect = Rectangle(0, 0, w, h)
     let bmpData = testBmp.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb)
 

@@ -11,6 +11,9 @@
     <LangVersion>preview</LangVersion>
     <ServerGarbageCollection>true</ServerGarbageCollection>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Tailcalls>true</Tailcalls>
+  </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
     <Compile Include="G2.fsx" />

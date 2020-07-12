@@ -37,6 +37,3 @@
 ![Mandelbrot_txt](./adata/mandelbrot_txt.png "Mandelbrot_txt")
 ![Moons_C](./adata/smoons_continuum.gif "smoons_continuum")
 
-## Dummy build:
-
-[Docs](https://padelro.github.io/build/build.html)

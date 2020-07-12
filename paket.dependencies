@@ -16,14 +16,13 @@ nuget FSharpPlus
 nuget FSharpx.Extras
 nuget FSharpx.Collections
 nuget FSharp.Collections.ParallelSeq
-
-group Build
-    storage: none
-    source https://api.nuget.org/v3/index.json
-
-    nuget FSharp.Core
-    nuget Fake.Core.Target
-    nuget Fake.DotNet.Cli
-    nuget Fake.DotNet.Fsi
-    nuget Fake.DotNet.Paket
-    nuget Fake.IO.FileSystem
+nuget Elmish
+nuget Akka prerelease
+nuget Akka.FSharp prerelease
+nuget Akkling prerelease
+nuget Akka.Logger.Serilog
+nuget Serilog
+nuget Serilog.Sinks.Console
+nuget System.Net.Http
+nuget FSharp.Data
+nuget FSharp.Data.Adaptive
