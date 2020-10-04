@@ -5,6 +5,14 @@ VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Playground", "Playground.fsproj", "{B2EAFFBF-4E77-47E3-9118-6B98D75FA7AE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{68E4EF35-C5DF-46D4-978B-D25B4CECCF83}"
+	ProjectSection(SolutionItems) = preProject
+		paket.dependencies = paket.dependencies
+		paket.references = paket.references
+		BH\README.fsx = BH\README.fsx
+		TEMP.fsx = TEMP.fsx
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

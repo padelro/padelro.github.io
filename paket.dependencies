@@ -1,5 +1,5 @@
 source https://api.nuget.org/v3/index.json
-framework: netcoreapp5.0
+framework: netcoreapp3.1
 generate_load_scripts: true
 
 nuget FSharp.Core
@@ -10,6 +10,7 @@ nuget MathNet.Numerics
 nuget MathNet.Numerics.FSharp
 nuget DiffSharp
 nuget FSharp.Charting
+nuget FSharp.Compiler.Service
 nuget FSharp.Formatting
 nuget Aether
 nuget FSharpPlus
@@ -17,6 +18,7 @@ nuget FSharpx.Extras
 nuget FSharpx.Collections
 nuget FSharp.Collections.ParallelSeq
 nuget Elmish
+nuget Fable.React
 nuget Akka prerelease
 nuget Akka.FSharp prerelease
 nuget Akkling prerelease
@@ -26,3 +28,5 @@ nuget Serilog.Sinks.Console
 nuget System.Net.Http
 nuget FSharp.Data
 nuget FSharp.Data.Adaptive
+nuget FSharp.Quotations.Evaluator
+nuget FsCheck

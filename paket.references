@@ -13,3 +13,6 @@ FSharpPlus
 FSharpx.Extras
 FSharpx.Collections
 FSharp.Collections.ParallelSeq
+
+FSharp.Data
+FSharp.Data.Adaptive

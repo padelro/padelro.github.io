@@ -1,3 +1,9 @@
 {
-    "FSharp.suggestSdkScripts": false
+    "FSharp.suggestSdkScripts": false,
+    "search.exclude": {
+        "**/.git": true,
+        "**/node_modules": true,
+        "**/tmp": true,
+        "**/.paket": true
+    }
 }

@@ -80,11 +80,11 @@ let main argv =
     use g = bg.Graphics
     do g.SmoothingMode <- SmoothingMode.HighQuality
 
-    use font = new Font("Elementa", 12.f)
-    use fontS = new Font("Elementa", 10.f, FontStyle.Italic)
+    use font = new Font("Iosevka SS08", 12.f)
+    use fontS = new Font("Iosevka SS08", 10.f)
     use brush = new SolidBrush(Color.FromArgb(255, 25, 25, 25))
 
-    let ttt = 8
+    let ttt = 3
     let bs = Array.init ttt (fun i ->
         let x = Math.PI * float i / float ttt
         let f = sin x
@@ -158,19 +158,19 @@ let main argv =
             do drawBiV (uv |> snd) Color.DarkOliveGreen 1.f
 
         | 2 ->
-            let ``a||`` = project model.a model.b
-            let ``a|_`` = reject model.a model.b
-            let a' = model.a - ``a||``
+            let ``a∥`` = project model.a model.b
+            let ``a⟂`` = reject model.a model.b
+            let a' = model.a - ``a∥``
 
             let ``a reflectd b`` = reflect model.a model.b
             let ``c rotated a b`` = rotate model.c model.a model.b
 
             do drawV model.a Color.LightSeaGreen 2.f (nameof model.a)
             do drawV model.b Color.Blue 2.f (nameof model.b)
-            do drawV ``a||`` Color.Yellow 6.f (nameof ``a||``)
+            do drawV ``a∥`` Color.Yellow 6.f (nameof ``a∥``)
             do drawV ~~model.b Color.DeepPink 4.f ("-" + nameof model.b)
             do drawV a' Color.DarkTurquoise 6.f String.Empty
-            do drawV ``a|_`` Color.Green 2.f (nameof ``a|_``)
+            do drawV ``a⟂`` Color.Green 2.f (nameof ``a⟂``)
             do drawBiV (model.a |^ model.b) Color.HotPink 1.f
 
             do drawV model.c Color.Black 4.f (nameof model.c)
