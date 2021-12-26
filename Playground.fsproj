@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
-	<PropertyGroup>
-		<OutputType>Exe</OutputType>
-		<TargetFramework>netcoreapp3.1</TargetFramework>
-		<!-- <TargetFSharpCoreVersion>4.7.0.0</TargetFSharpCoreVersion> -->
-		<UseWindowsForms>true</UseWindowsForms>
-		<RuntimeFrameworkVersion>3.1.6</RuntimeFrameworkVersion>
-		<PlatformTarget>x64</PlatformTarget>
-		<DefineConstants>DEBUG</DefineConstants>
-		<LangVersion>preview</LangVersion>
-		<ServerGarbageCollection>true</ServerGarbageCollection>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<Tailcalls>true</Tailcalls>
-	</PropertyGroup>
-	<ItemGroup>
-		<None Include="App.config" />
-		<Compile Include="G2.fsx" />
-		<Compile Include="Main.fs" />
-	</ItemGroup>
-	<Import Project=".paket\Paket.Restore.targets" />
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <UseWindowsForms>true</UseWindowsForms>
+        <PlatformTarget>x64</PlatformTarget>
+        <DefineConstants>DEBUG</DefineConstants>
+        <LangVersion>preview</LangVersion>
+        <ServerGarbageCollection>true</ServerGarbageCollection>
+        <DisableWinExeOutputInference>false</DisableWinExeOutputInference>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <Tailcalls>true</Tailcalls>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="App.config" />
+        <Compile Include="G2.fsx" />
+        <Compile Include="FsMoonZ.fsx" />
+        <Compile Include="Main.fs" />
+    </ItemGroup>
+    <Import Project=".paket\Paket.Restore.targets" />
 </Project>

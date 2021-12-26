@@ -252,7 +252,7 @@ let fillScreen world (color: Color) (graphics: Graphics) =
 
 let drawSeed seed (graphics: Graphics) =
     let x, y = 10.0f, 0.0f
-    use fontS = new Font( new FontFamily("Iosevka"), 8.0f )
+    use fontS = new Font( new FontFamily("PragmataPro Mono Liga"), 8.0f )
     let offsetX, offsetY = 2.f, 2.0f
     graphics.DrawString(
         sprintf "Seed: %i" seed,

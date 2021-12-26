@@ -6,7 +6,7 @@ FsPickler.Json
 MathNet.Numerics
 MathNet.Numerics.FSharp
 DiffSharp
-FSharp.Charting
+// FSharp.Charting
 Aether
 
 FSharpPlus

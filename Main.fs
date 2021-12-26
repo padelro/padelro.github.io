@@ -32,6 +32,7 @@ type DxForm(size: int * int) as __ =
 open Aether
 open Aether.Operators
 open G2.V2
+open FsMoonZ
 
 type V with
     static member _x = (fun a -> a.x), (fun b (a: V) -> { a with x = b })
@@ -80,8 +81,8 @@ let main argv =
     use g = bg.Graphics
     do g.SmoothingMode <- SmoothingMode.HighQuality
 
-    use font = new Font("Iosevka SS08", 12.f)
-    use fontS = new Font("Iosevka SS08", 10.f)
+    use font = new Font("PragmataPro Mono Liga", 12.f)
+    use fontS = new Font("PragmataPro Mono Liga", 10.f)
     use brush = new SolidBrush(Color.FromArgb(255, 25, 25, 25))
 
     let ttt = 3
@@ -162,7 +163,7 @@ let main argv =
             let ``a⟂`` = reject model.a model.b
             let a' = model.a - ``a∥``
 
-            let ``a reflectd b`` = reflect model.a model.b
+            let ``a reflected b`` = reflect model.a model.b
             let ``c rotated a b`` = rotate model.c model.a model.b
 
             do drawV model.a Color.LightSeaGreen 2.f (nameof model.a)
@@ -174,7 +175,7 @@ let main argv =
             do drawBiV (model.a |^ model.b) Color.HotPink 1.f
 
             do drawV model.c Color.Black 4.f (nameof model.c)
-            do drawV ``a reflectd b`` Color.AliceBlue 2.f (nameof ``a reflectd b``)
+            do drawV ``a reflected b`` Color.AliceBlue 2.f (nameof ``a reflected b``)
             do drawV ``c rotated a b`` Color.DeepPink 2.f (nameof ``c rotated a b``)
         | _ -> ()
 
@@ -251,7 +252,9 @@ let main argv =
         | _ -> ()
     )
 
+    async { do View.run() } |> Async.Start
     do w.ShowDialog() |> ignore
+
     bs |> Array.iter(fun o -> (o :> IDisposable).Dispose())
     printfn "Hello World from F#! [%A]" DateTime.Now
 

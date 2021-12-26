@@ -29,7 +29,7 @@ let scale' x upperLimit =
         (m * upperLimit) / 500.0
 
 let scale x =
-    scale' x 10.0
+    scale' x 5.0
 
 let y1, stepX, y2 = -1.3, 0.00725, 1.3
 let x1, stepY, x2 = -2.0, 0.00725, 1.0
@@ -47,15 +47,14 @@ let maxLimit =
     |> List.max
 
 do
-    let old = Console.ForegroundColor
-
-    limits |> List.iter (fun row ->
-        row |> List.iter( fun v ->
-            let color = enum<ConsoleColor>(v |> scale |> int)
-            Console.ForegroundColor <- color
-            printf "0"
+    Console.ForegroundColor
+    |> fun old ->
+        limits |> List.iter (fun row ->
+            row |> List.iter( fun v ->
+                let color = enum<ConsoleColor>(v |> scale |> int)
+                Console.ForegroundColor <- color
+                printf "0"
+            )
+            printfn ""
         )
-        printfn ""
-    )
-
-    do Console.ForegroundColor <- old
+        do Console.ForegroundColor <- old

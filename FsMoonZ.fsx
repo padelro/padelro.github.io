@@ -1,10 +1,14 @@
-#load ".paket/load/netcoreapp3.0/main.group.fsx"
+#if INTERACTIVE
+#load ".paket/load/main.group.fsx"
+#endif
+
 open System.IO
 open System.Drawing
 open System.Drawing.Imaging
 open System.Drawing.Drawing2D
 open System.Numerics
 open System.Runtime.InteropServices
+
 open FSharp.Collections.ParallelSeq
 
 open FSharpPlus
@@ -166,13 +170,15 @@ module View =
     open RayMarching
     open Img
 
-    let w, h = (2560, 1440)
+    let w, h = (3840, 1600)
     let b = new Bitmap(w, h)
     let g = Graphics.FromImage b
     g.SmoothingMode <- SmoothingMode.HighQuality
     g.Clear(Color.Red)
 
     let run() =
+        printfn "Exec [shader >> renderer]..."
+        
         let toImg (b: Bitmap) = (Img b)
         let renderer = fun bI -> img { return! bI }
         let shader = fun (bI) -> img {
@@ -194,13 +200,15 @@ module View =
         }
 
         let bmpOut = b |> toImg |> (shader >> renderer)
-        do g.DrawString("-> FsMoonZ 2.0b", new Font("Dank Mono", 36.f, FontStyle.Italic), Brushes.YellowGreen, 150.f, 10.f)
+        do g.DrawString("-> FsMoonZ 2.0c", new Font("PragmataPro Mono Liga", 36.f, FontStyle.Italic), Brushes.YellowGreen, 150.f, 10.f)
 
         do bmpOut.Save(Path.Combine(__SOURCE_DIRECTORY__ + "./adata/smoons.png"), ImageFormat.Png)
 
+        printfn "Done!"
+
 
 #time "on"
-do View.run()
+// do View.run()
 #time "off"
 
 [<RequireQualifiedAccess>]
@@ -214,6 +222,5 @@ module ImplicitUsage =
             static member op_Implicit v = { v = v - 5 }
             static member FromInt(v: int): T1 = Implicit.Invoke(v)
             static member ToInt(v: T1): int = Implicit.Invoke(v)
-
 
     T1.FromInt 4 |> T1.ToInt |> printfn "int <-> T1 <-> int: %A"
