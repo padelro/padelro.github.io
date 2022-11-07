@@ -5,7 +5,8 @@ FsPickler.Json
 
 MathNet.Numerics
 MathNet.Numerics.FSharp
-DiffSharp
+// DiffSharp
+DiffSharp-cpu
 // FSharp.Charting
 Aether
 
@@ -16,3 +17,4 @@ FSharp.Collections.ParallelSeq
 
 FSharp.Data
 FSharp.Data.Adaptive
+Argu

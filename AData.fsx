@@ -1,31 +1,47 @@
+#if INTERACTIVE
+
+// -- [MARK] : Check `global.json`
+#I @"C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\6.0.10\"
+#r "System.Windows.Forms.dll"
+#r "System.Windows.Forms.Primitives.dll"
+#r "Microsoft.Win32.SystemEvents.dll"
+#r "System.Drawing.dll"
+#r "System.Drawing.Common.dll"
+
+#endif
+
 open System
-open System.IO
 open System.Windows.Forms
 open System.Drawing
-open System.Threading.Tasks
 open System.Drawing.Drawing2D
+open System.Collections.Generic
 
-Environment.SetEnvironmentVariable(
-    "Path", Environment.GetEnvironmentVariable("Path") + ";" +
-        Path.Combine( __SOURCE_DIRECTORY__, @"./packages/DiffSharp/build/" )
-    )
 
-#I "./packages/DiffSharp/lib/net46/"
-#I "./packages/DiffSharp/build/"
+#if INTERACTIVE
 
-#r "DiffSharp.dll"
+#r "nuget: DiffSharp-cpu"
+#r "nuget: FSharp.Collections.ParallelSeq"
 
-open DiffSharp.AD.Float64
+#endif
+
+open DiffSharp
+open FSharp.Collections.ParallelSeq
+
+#if INTERACTIVE
+
+do dsharp.config(dtype=Dtype.Float32, device=Device.CPU, backend=Backend.Torch)
+
+#endif
 
 type SObj =
     {   id: int
-    ;  pos: DV
-    ;    v: DV
-    ;  acc: DV
-    ;    f: DV
-    ; mass: D }
+    ;  pos: Tensor
+    ;    v: Tensor
+    ;  acc: Tensor
+    ;    f: Tensor
+    ; mass: Tensor }
 
-let δxy (pos1: DV) (pos2: DV) =
+let δxy (pos1: Tensor) (pos2: Tensor) =
     let x1, y1, x2, y2 =
         pos1.[0], pos1.[1],
         pos2.[0], pos2.[1]
@@ -37,23 +53,26 @@ let δxy (pos1: DV) (pos2: DV) =
 let δ δx δy =
     sqrt ( pown δx 2 + pown δy 2 )
 
-let f (m1: D) (m2: D) (x: DV) (y: DV) =
+let scaleBy = dsharp.tensor Math.PI * 0.1e11
+let G = dsharp.tensor 6.674e-11
+let zero = dsharp.tensor [| 0.; 0. |]
+
+let f (m1: Tensor) (m2: Tensor) (x: Tensor) (y: Tensor) =
     let δx, δy = δxy x y
     let δ = δ δx δy
-    let scaleBy = D Math.PI * 0.1e11
 
     let fMod =
-        D 6.674e-11
+        G
         * scaleBy
         * ( m1 * m2 )
         / ( pown δ 2 )
 
     let α = abs (δy / δx) |> atan
-    let sign = diff abs
+    let sign = dsharp.diff abs
 
     if δ < (m1 + m2) / 2.0
-    then DV  [| 0.; 0. |]
-    else DV.ofArray [| fMod * (cos α) * (sign δx); fMod * (sin α) * (sign δy) |]
+    then zero
+    else dsharp.tensor [| fMod * (cos α) * (sign δx); fMod * (sin α) * (sign δy) |]
 
 let fObj object1 object2 =
     let m1, m2, pos1, pos2 =
@@ -71,10 +90,10 @@ let updateWorld world _ =
             |> List.fold (
                 fun Σf otherObject ->
                     Σf + fObj object otherObject
-                ) ( DV [| 0. ; 0. |] )
+                ) ( zero )
         )
 
-let body (pos: DV) mass (graphics: Graphics) =
+let body (pos: Tensor) mass (graphics: Graphics) =
     let x, y, m = float pos.[0], float pos.[1], float mass
     let p = new Pen( Color.FromArgb( 220, 120, 140, 190 ) )
 
@@ -87,7 +106,7 @@ let body (pos: DV) mass (graphics: Graphics) =
         )
     graphics // ...
 
-let force (pos: DV) (v: DV) (graphics: Graphics) =
+let force (pos: Tensor) (v: Tensor) (graphics: Graphics) =
     let x, y = float pos.[0], float pos.[1]
     let scaleBy = 1.0e2
     let vx, vy = float v.[0], float v.[1]
@@ -102,9 +121,9 @@ let force (pos: DV) (v: DV) (graphics: Graphics) =
         )
     graphics
 
-let text (pos: DV) line text (graphics: Graphics) =
+let text (pos: Tensor) line text (graphics: Graphics) =
     let x, y = float pos.[0], float pos.[1]
-    use fontS = new Font( new FontFamily("Iosevka"), 8.0f ) // (!)
+    use fontS = new Font( new FontFamily("IBM Plex Mono"), 8.0f ) // (!)
     let offsetX, offsetY = 30.f, 5.0f
 
     graphics.DrawString(
@@ -136,39 +155,39 @@ let drawObj sObj (graphics: Graphics) =
     |> text sObj.pos 1 ( sprintf "(%3.6f, %3.6f)" ( float sObj.pos.[0] ) ( float sObj.pos.[1] ) )
     |> ignore // meh
 
-let drawField world graphics =
-    [
-        [0 .. 20 .. 1200]
-        |> List.map (
-            ( fun i ->
-                [ 0 .. 20 .. 1200 ]
-                |> List.map (
-                    fun j -> async {
-                        let pos = DV [| float i; float j |]
-                        let m = D 0.01
+let mAffine = dsharp.tensor 0.01
 
-                        let f =
-                            world
-                            |> List.fold (
-                                fun Σf sObj ->
-                                    Σf + f m sObj.mass pos sObj.pos * sObj.mass
-                                ) (DV [| 0.; 0. |])
+let drawFieldCache =    
+    seq { 0 .. 20 .. 1200 }
+    |> Seq.map (
+        fun i ->
+            seq { 0 .. 20 .. 1200 }
+            |> Seq.map (
+                fun j ->
+                    dsharp.tensor [| float i; float j |]
+            )
+    )
+    |> Seq.collect id
 
-                        return ( pos, f )
-                    }
-                )
-                |> Async.Parallel
-                |> Async.RunSynchronously
-            )
-            >>
-            ( fun pl ->
-                pl |> Array.iter (
-                    fun (pos, f) ->
-                        graphics |> force pos f |> ignore
-                    )
-            )
-        )
-    ] |> ignore
+
+let drawField world graphics =    
+    drawFieldCache
+    |> PSeq.map (
+        fun pos ->
+            let f =
+                world
+                |> List.fold (
+                    fun Σf sObj ->
+                        Σf + f mAffine sObj.mass pos sObj.pos * sObj.mass
+                    ) ( zero )
+
+            ( pos, f )
+    )
+    |> Seq.iter(
+        fun (pos, f) ->
+            graphics |> force pos f |> ignore
+    )
+
 
 let drawWorld world time (graphics: Graphics) =
     graphics |> drawEon time |> drawField world
@@ -177,64 +196,64 @@ let drawWorld world time (graphics: Graphics) =
 let sObjs =
     [
         {   id = 1
-        ;  pos = DV [| 100.; 100.|]
-        ;    v = DV [| 0.; 0. |]
-        ;  acc = DV [| 0.; 0. |]
-        ; mass = D 40.
-        ;    f = DV [| 0.; 0. |] }
+        ;  pos = dsharp.tensor [| 100.; 100.|]
+        ;    v = dsharp.tensor [| 0.; 0. |]
+        ;  acc = dsharp.tensor [| 0.; 0. |]
+        ; mass = dsharp.tensor 40.
+        ;    f = dsharp.tensor [| 0.; 0. |] }
         // --
         {   id = 2
-        ;  pos = DV [| 200.; 400.|]
-        ;    v = DV [| 0.; 0. |]
-        ;  acc = DV [| 0.; 0. |]
-        ; mass = D 100.
-        ;    f = DV [| 0.; 0. |] }
+        ;  pos = dsharp.tensor [| 200.; 400.|]
+        ;    v = dsharp.tensor [| 0.; 0. |]
+        ;  acc = dsharp.tensor [| 0.; 0. |]
+        ; mass = dsharp.tensor 100.
+        ;    f = dsharp.tensor [| 0.; 0. |] }
         // --
         {   id = 3
-        ;  pos = DV [| 900.; 600.|]
-        ;    v = DV [| 0.; 0. |]
-        ;  acc = DV [| 0.; 0. |]
-        ; mass = D 10.
-        ;    f = DV [| 0.; 0. |] }
+        ;  pos = dsharp.tensor [| 900.; 600.|]
+        ;    v = dsharp.tensor [| 0.; 0. |]
+        ;  acc = dsharp.tensor [| 0.; 0. |]
+        ; mass = dsharp.tensor 10.
+        ;    f = dsharp.tensor [| 0.; 0. |] }
         // --
         {   id = 4
-        ;  pos = DV [| 150.; 750.|]
-        ;    v = DV [| 0.; 0. |]
-        ;  acc = DV [| 0.; 0. |]
-        ; mass = D 5.
-        ;    f = DV [| 0.; 0. |] }
+        ;  pos = dsharp.tensor [| 150.; 750.|]
+        ;    v = dsharp.tensor [| 0.; 0. |]
+        ;  acc = dsharp.tensor [| 0.; 0. |]
+        ; mass = dsharp.tensor 5.
+        ;    f = dsharp.tensor [| 0.; 0. |] }
         // --
         {   id = 5
-        ;  pos = DV [| 850.; 250.|]
-        ;    v = DV [| 0.; 0. |]
-        ;  acc = DV [| 0.; 0. |]
-        ; mass = D 420.
-        ;    f = DV [| 0.; 0. |] }
+        ;  pos = dsharp.tensor [| 850.; 250.|]
+        ;    v = dsharp.tensor [| 0.; 0. |]
+        ;  acc = dsharp.tensor [| 0.; 0. |]
+        ; mass = dsharp.tensor 420.
+        ;    f = dsharp.tensor [| 0.; 0. |] }
         // --
         {   id = 6
-        ;  pos = DV [| 550.; 550.|]
-        ;    v = DV [| 0.; 0. |]
-        ;  acc = DV [| 0.; 0. |]
-        ; mass = D 30.
-        ;    f = DV [| 0.; 0. |] }
+        ;  pos = dsharp.tensor [| 550.; 550.|]
+        ;    v = dsharp.tensor [| 0.; 0. |]
+        ;  acc = dsharp.tensor [| 0.; 0. |]
+        ; mass = dsharp.tensor 30.
+        ;    f = dsharp.tensor [| 0.; 0. |] }
         // --
         {   id = 7
-        ;  pos = DV [| 250.; 1000.|]
-        ;    v = DV [| 0.; 0. |]
-        ;  acc = DV [| 0.; 0. |]
-        ; mass = D 180.
-        ;    f = DV [| 0.; 0. |] }
+        ;  pos = dsharp.tensor [| 250.; 1000.|]
+        ;    v = dsharp.tensor [| 0.; 0. |]
+        ;  acc = dsharp.tensor [| 0.; 0. |]
+        ; mass = dsharp.tensor 180.
+        ;    f = dsharp.tensor [| 0.; 0. |] }
     ]
 
 let memoize f =
-    let cache = ref Map.empty
+    let cache = ref (Dictionary<_,_>())
     fun x ->
-        match (!cache).TryFind(x) with
-        | Some res ->
+        match (!cache).TryGetValue(x) with
+        | (true, res) ->
             res
-        | None ->
+        | _ ->
             let res = f x
-            cache := (!cache).Add(x,res)
+            (!cache).Add(x, res)
             res
 
 let universe =
@@ -264,13 +283,14 @@ let universe =
         )
     )
 
-
 type DrawForm() as x =
     inherit Form()
     do
         x.SetStyle(ControlStyles.OptimizedDoubleBuffer, true)
 
-let _ =
+let m() =
+    do dsharp.config(dtype=Dtype.Float32, device=Device.CPU, backend=Backend.Reference)
+
     let knob =
         new TrackBar(
             TickFrequency = 50
@@ -289,7 +309,7 @@ let _ =
 
     form.Controls.Add knob
 
-    let view = async {
+    let view =
         use graphics = Graphics.FromHwnd(form.Handle)
         let ctx = BufferedGraphicsManager.Current
         use buffer = ctx.Allocate( graphics, form.DisplayRectangle )
@@ -298,21 +318,17 @@ let _ =
 
         knob.ValueChanged.Add (
             fun _ ->
-                
                 graphics.Clear(Color.WhiteSmoke)
 
                 let time = knob.Value
 
                 let world, tt =
-                    ( sObjs |> List.map ( fun _ -> DV.zeroCreate 2 ), sObjs , 0L )
+                    ( sObjs |> List.map ( fun _ -> Array.zeroCreate<float32> 2 |> dsharp.tensor ), sObjs , 0L )
                     |> universe |> Seq.skip time |> Seq.take 1 |> Seq.exactlyOne // just to make sure
 
                 graphics |> drawWorld world tt |> fun _ -> buffer.Render()
             )
 
-        let dResult = form.ShowDialog()
-        let! endDialog = (Task.FromResult dResult) |> Async.AwaitTask
-        return endDialog
-    }
+        form.ShowDialog()
 
-    view |> Async.StartAsTask |> Async.AwaitTask |> ignore
+    view

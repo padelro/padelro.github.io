@@ -4,20 +4,28 @@
         <OutputType>Exe</OutputType>
         <TargetFramework>net6.0-windows</TargetFramework>
         <UseWindowsForms>true</UseWindowsForms>
-        <PlatformTarget>x64</PlatformTarget>
         <DefineConstants>DEBUG</DefineConstants>
         <LangVersion>preview</LangVersion>
         <ServerGarbageCollection>true</ServerGarbageCollection>
         <DisableWinExeOutputInference>false</DisableWinExeOutputInference>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <PlatformTarget>x64</PlatformTarget>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <Tailcalls>true</Tailcalls>
     </PropertyGroup>
     <ItemGroup>
+        <Content Include="Properties\launchSettings.json" />
+    </ItemGroup>
+    <ItemGroup>
         <None Include="App.config" />
+        <Compile Include="Common.fs" />
         <Compile Include="G2.fsx" />
+        <Compile Include="GA.fsx" />
         <Compile Include="FsMoonZ.fsx" />
+        <Compile Include="AData.fsx" />
         <Compile Include="Main.fs" />
     </ItemGroup>
+
     <Import Project=".paket\Paket.Restore.targets" />
 </Project>

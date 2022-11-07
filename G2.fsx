@@ -105,5 +105,9 @@ module V2 =
             printfn "==> (a reflect b):\t %A" <| ((aref + 2. * (reject a b) - a) |> V.Size < e)
             printfn "==> (c rotate a b):\t %A" <| ((crot |. a) - 2. * (a |. b) < e)
 
-    do V.__Tests()
-    do BiV.__Tests()
+#if INTERACTIVE
+
+do V2.V.__Tests()
+do V2.BiV.__Tests()
+
+#endif

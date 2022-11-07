@@ -8,7 +8,8 @@ nuget FsPickler
 nuget FsPickler.Json
 nuget MathNet.Numerics
 nuget MathNet.Numerics.FSharp
-nuget DiffSharp
+// nuget DiffSharp
+nuget DiffSharp-cpu
 // nuget FSharp.Charting
 nuget FSharp.Compiler.Service
 nuget FSharp.Formatting
@@ -30,3 +31,4 @@ nuget FSharp.Data
 nuget FSharp.Data.Adaptive
 nuget FSharp.Quotations.Evaluator
 nuget FsCheck
+nuget Argu

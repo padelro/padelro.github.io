@@ -108,6 +108,8 @@ module Img =
                 match img with
                 | Img b ->
                     let buffer = Array.create (b.Width * b.Height * 4) 0uy
+                    let rnd = System.Random()
+
                     do begin
                         (bmpAsArray b buffer)
 
@@ -117,7 +119,6 @@ module Img =
 
                         seq { for x in 0 .. w-1 -> seq { for y in 0 .. h-1 -> (x, y) } }
                         |> PSeq.iter (fun scan ->
-                            let rnd = System.Random()
                             scan |> Seq.iter (fun (x, y) ->
                                 let (r, g, b) = func (x, y, (colorGet x y 2, colorGet x y 1, colorGet x y 0), rnd)
 
@@ -131,6 +132,8 @@ module Img =
                     Internal (b, buffer)
 
                 | Internal (b, buffer) ->
+                    let rnd = System.Random()
+
                     do begin
                         let w, h = b.Width, b.Height
                         let colorGet = colorGetT buffer w
@@ -138,8 +141,6 @@ module Img =
 
                         seq { for x in 0 .. w-1 -> seq { for y in 0 .. h-1 -> (x, y) } }
                         |> PSeq.iter (fun scan ->
-                            let rnd = System.Random()
-
                             scan |> Seq.iter (fun (x, y) ->
                                 let (r, g, b) = func (x, y, (colorGet x y 2, colorGet x y 1, colorGet x y 0), rnd)
 
@@ -178,7 +179,7 @@ module View =
 
     let run() =
         printfn "Exec [shader >> renderer]..."
-        
+
         let toImg (b: Bitmap) = (Img b)
         let renderer = fun bI -> img { return! bI }
         let shader = fun (bI) -> img {
@@ -206,10 +207,13 @@ module View =
 
         printfn "Done!"
 
+#if INTERACTIVE
 
 #time "on"
-// do View.run()
+do View.run()
 #time "off"
+
+#endif
 
 [<RequireQualifiedAccess>]
 module Implicit =
@@ -223,4 +227,8 @@ module ImplicitUsage =
             static member FromInt(v: int): T1 = Implicit.Invoke(v)
             static member ToInt(v: T1): int = Implicit.Invoke(v)
 
-    T1.FromInt 4 |> T1.ToInt |> printfn "int <-> T1 <-> int: %A"
+#if INTERACTIVE
+
+ImplicitUsage.T1.FromInt 4 |> T1.ToInt |> printfn "int <-> T1 <-> int: %A"
+
+#endif
