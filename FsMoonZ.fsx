@@ -177,7 +177,7 @@ module View =
     g.SmoothingMode <- SmoothingMode.HighQuality
     g.Clear(Color.Red)
 
-    let run() =
+    let m() =
         printfn "Exec [shader >> renderer]..."
 
         let toImg (b: Bitmap) = (Img b)
@@ -210,7 +210,7 @@ module View =
 #if INTERACTIVE
 
 #time "on"
-do View.run()
+do View.m()
 #time "off"
 
 #endif

@@ -46,7 +46,7 @@ let maxLimit =
     |> List.collect id
     |> List.max
 
-let run() =
+let m() =
     Console.ForegroundColor
     |> fun old ->
         limits |> List.iter (fun row ->

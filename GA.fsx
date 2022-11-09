@@ -46,7 +46,7 @@ module GA =
         static member _cx = Model._c >-> V._x
         static member _cy = Model._c >-> V._y
 
-    let run() =
+    let m() =
         use w = new DxForm((1200, 800), FormBorderStyle = FormBorderStyle.FixedSingle)
         use t = new Timer(Interval = int (1000./60.), Enabled = true)
         use gw = Graphics.FromHwnd(w.Handle)

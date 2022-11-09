@@ -374,6 +374,6 @@ let m() =
 
 #if INTERACTIVE
 
-do main()
+do m()
 
 #endif

@@ -50,10 +50,10 @@ let main argv =
         return
             match program with
             | Program.None -> printfn "No program specified..."
-            | Program.GA -> GA.run()
-            | Program.FsMoonz -> View.run()
+            | Program.GA -> GA.m()
+            | Program.FsMoonz -> View.m()
             | Program.AData -> AData.m() |> ignore
-            | Program.Mandelbrot -> Mandelbrot.run()
+            | Program.Mandelbrot -> Mandelbrot.m()
             | Program.Gen0 -> Gen0.m() |> ignore
             | _ -> failwith "Program does not exist! See usage for help."
     }
