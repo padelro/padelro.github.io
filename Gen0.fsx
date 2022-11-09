@@ -1,8 +1,26 @@
+#if INTERACTIVE
+
+// -- [MARK] : Check `global.json`
+#I @"C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\7.0.0\"
+#r "System.Windows.Forms.dll"
+#r "System.Windows.Forms.Primitives.dll"
+#r "Microsoft.Win32.SystemEvents.dll"
+#r "System.Drawing.dll"
+#r "System.Drawing.Common.dll"
+
+#endif
+
 open System
 open System.Windows.Forms
 open System.Drawing
 open System.Drawing.Drawing2D
 open System.Threading.Tasks
+
+#if INTERACTIVE
+
+#r "nuget: DiffSharp-cpu"
+
+#endif
 
 type DrawForm() as x =
     inherit Form()
@@ -122,7 +140,7 @@ let showDrwaingGrid gridParams (graphics: Graphics) =
         )
         |> List.iter ( fun (p1, p2) -> graphics.DrawLine( p, p1, p2 ) )
 
-    [0 .. d.columns - 1 ]
+    [ 0 .. d.columns - 1 ]
         |> List.iter (
             fun i ->
                 [ 0 .. d.rows - 1 ]
@@ -303,7 +321,7 @@ let tick world (graphics: Graphics) =
     |> drawSeed world.seed
     |> showDrwaingGrid gridParams
 
-let _ =
+let m() =
     let ctx = BufferedGraphicsManager.Current
 
     let knob =
@@ -352,10 +370,10 @@ let _ =
         refresh
     )
 
-    let view = async {
-        let dResult = form.ShowDialog()
-        let! endDialog = (Task.FromResult dResult) |> Async.AwaitTask
-        return endDialog
-    }
+    form.ShowDialog()
 
-    view |> Async.StartAsTask |> Async.AwaitTask |> ignore
+#if INTERACTIVE
+
+do main()
+
+#endif

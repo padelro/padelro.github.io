@@ -1,5 +1,5 @@
 source https://api.nuget.org/v3/index.json
-framework: net6.0-windows
+framework: net7.0-windows
 generate_load_scripts: true
 
 nuget FSharp.Core
@@ -9,7 +9,7 @@ nuget FsPickler.Json
 nuget MathNet.Numerics
 nuget MathNet.Numerics.FSharp
 // nuget DiffSharp
-nuget DiffSharp-cpu
+nuget DiffSharp-cpu prerelease
 // nuget FSharp.Charting
 nuget FSharp.Compiler.Service
 nuget FSharp.Formatting

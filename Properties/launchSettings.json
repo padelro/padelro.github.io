@@ -2,7 +2,7 @@
     "profiles": {
         "Playground": {
             "commandName": "Project",
-            "commandLineArgs": "-p=adata"
+            "commandLineArgs": "-p=mandelbrot"
         }
     }
 }

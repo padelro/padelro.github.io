@@ -1,7 +1,7 @@
 #if INTERACTIVE
 
 // -- [MARK] : Check `global.json`
-#I @"C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\6.0.10\"
+#I @"C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\7.0.0\"
 #r "System.Windows.Forms.dll"
 #r "System.Windows.Forms.Primitives.dll"
 #r "Microsoft.Win32.SystemEvents.dll"
@@ -157,7 +157,7 @@ let drawObj sObj (graphics: Graphics) =
 
 let mAffine = dsharp.tensor 0.01
 
-let drawFieldCache =    
+let drawFieldCache =
     seq { 0 .. 20 .. 1200 }
     |> Seq.map (
         fun i ->
@@ -170,7 +170,7 @@ let drawFieldCache =
     |> Seq.collect id
 
 
-let drawField world graphics =    
+let drawField world graphics =
     drawFieldCache
     |> PSeq.map (
         fun pos ->
