@@ -1,4 +1,6 @@
-﻿open System
+﻿namespace GA
+
+open System
 open System.Windows.Forms
 open System.Drawing
 open System.Drawing.Drawing2D
@@ -86,7 +88,7 @@ module GA =
                 for _y in -300.f .. gridSize .. 300.f do
                     g.DrawEllipse(Pens.DarkRed, ox + _x - s, oy - _y - s, 2.f * s, 2.f * s)
 
-        let drawV (v: V) (c : Color) s name =
+        let drawV (v: V) (c : Color) s (name: string) =
             using (new Pen(c, s)) (fun p ->
                 g.DrawLine(
                     p,

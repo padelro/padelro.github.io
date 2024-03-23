@@ -14,10 +14,8 @@ open Argu
 // --
 
 open FsMoonZ
-open AData
 open GA
-open Mandelbrot
-open Gen0
+open Lorentz
 
 type Program =
     | None = 0
@@ -26,6 +24,7 @@ type Program =
     | AData = 3
     | Mandelbrot = 4
     | Gen0 = 5
+    | Lorentz = 6
 
 [<NoAppSettings>]
 type CliArguments =
@@ -45,19 +44,16 @@ let main argv =
     let program = args.GetResult(Program, defaultValue = Program.None)
 
     do printfn "Running program: [%A]..." program
-
-    async {
-        return
-            match program with
-            | Program.None -> printfn "No program specified..."
-            | Program.GA -> GA.m()
-            | Program.FsMoonz -> View.m()
-            | Program.AData -> AData.m() |> ignore
-            | Program.Mandelbrot -> Mandelbrot.m()
-            | Program.Gen0 -> Gen0.m() |> ignore
-            | _ -> failwith "Program does not exist! See usage for help."
-    }
-    |> Async.RunSynchronously // ?
+    
+    match program with
+    | Program.None -> printfn "No program specified..."
+    | Program.GA -> GA.m()
+    | Program.FsMoonz -> View.m()
+    | Program.AData -> AData.m() |> ignore
+    | Program.Mandelbrot -> Mandelbrot.m()
+    | Program.Gen0 -> Gen0.m() |> ignore
+    | Program.Lorentz -> Lorentz._main [||] |> Lorentz.UI.CE.runLoop |> ignore
+    | _ -> failwith "Program does not exist! See usage for help."
 
     let frameworkName = Assembly.GetEntryAssembly().GetCustomAttribute<TargetFrameworkAttribute>().FrameworkName
     do printfn "OS: %A, framework: %A" RuntimeInformation.OSDescription frameworkName
