@@ -1,7 +1,8 @@
 #if INTERACTIVE
 
 // -- [MARK] : Check `global.json`
-#I @"C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\7.0.0\"
+#I @"C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\9.0.0\"
+#r "System.Private.Windows.Core.dll"
 #r "System.Windows.Forms.dll"
 #r "System.Windows.Forms.Primitives.dll"
 #r "Microsoft.Win32.SystemEvents.dll"
@@ -29,7 +30,7 @@ open FSharp.Collections.ParallelSeq
 
 #if INTERACTIVE
 
-do dsharp.config(dtype=Dtype.Float32, device=Device.CPU, backend=Backend.Torch)
+do dsharp.config(dtype=Dtype.Float32, device=Device.CPU, backend=Backend.Reference)
 
 #endif
 
@@ -123,7 +124,7 @@ let force (pos: Tensor) (v: Tensor) (graphics: Graphics) =
 
 let text (pos: Tensor) line text (graphics: Graphics) =
     let x, y = float pos.[0], float pos.[1]
-    use fontS = new Font( new FontFamily("IBM Plex Mono"), 8.0f ) // (!)
+    use fontS = new Font( new FontFamily("Operator Mono Nerds"), 8.0f ) // (!)
     let offsetX, offsetY = 30.f, 5.0f
 
     graphics.DrawString(

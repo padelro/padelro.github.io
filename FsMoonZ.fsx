@@ -1,6 +1,23 @@
 #if INTERACTIVE
-#load ".paket/load/main.group.fsx"
+
+// -- [MARK] : Check `global.json`
+#I @"C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\9.0.0\"
+#r "System.Private.Windows.Core.dll"
+#r "System.Windows.Forms.dll"
+#r "System.Windows.Forms.Primitives.dll"
+#r "Microsoft.Win32.SystemEvents.dll"
+#r "System.Drawing.dll"
+#r "System.Drawing.Common.dll"
+
 #endif
+
+#if INTERACTIVE
+#load ".paket/load/net9.0/main.group.fsx"
+#endif
+
+#r "nuget: FSharpPlus"
+#r "nuget: FSharpx.Collections"
+#r "nuget: FSharp.Collections.ParallelSeq"
 
 open System.IO
 open System.Drawing
@@ -201,7 +218,7 @@ module View =
         }
 
         let bmpOut = b |> toImg |> (shader >> renderer)
-        do g.DrawString("-> FsMoonZ 2.0c", new Font("PragmataPro Mono Liga", 36.f, FontStyle.Italic), Brushes.YellowGreen, 150.f, 10.f)
+        do g.DrawString("-> FsMoonZ 2.0c", new Font("Operator Mono Nerds", 36.f, FontStyle.Italic), Brushes.YellowGreen, 150.f, 10.f)
 
         do bmpOut.Save(Path.Combine(__SOURCE_DIRECTORY__ + "./adata/smoons.png"), ImageFormat.Png)
 
@@ -229,6 +246,6 @@ module ImplicitUsage =
 
 #if INTERACTIVE
 
-ImplicitUsage.T1.FromInt 4 |> T1.ToInt |> printfn "int <-> T1 <-> int: %A"
+ImplicitUsage.T1.FromInt 4 |> ImplicitUsage.T1.ToInt |> printfn "int <-> T1 <-> int: %A"
 
 #endif

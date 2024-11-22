@@ -1,3 +1,16 @@
+#if INTERACTIVE
+
+// -- [MARK] : Check `global.json`
+#I @"C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\9.0.0\"
+#r "System.Private.Windows.Core.dll"
+#r "System.Windows.Forms.dll"
+#r "System.Windows.Forms.Primitives.dll"
+#r "Microsoft.Win32.SystemEvents.dll"
+#r "System.Drawing.dll"
+#r "System.Drawing.Common.dll"
+
+#endif
+
 open System.IO
 open System.Drawing
 open System.Drawing.Imaging

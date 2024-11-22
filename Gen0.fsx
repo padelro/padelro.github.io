@@ -1,7 +1,8 @@
 #if INTERACTIVE
 
 // -- [MARK] : Check `global.json`
-#I @"C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\7.0.0\"
+#I @"C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\9.0.0\"
+#r "System.Private.Windows.Core.dll"
 #r "System.Windows.Forms.dll"
 #r "System.Windows.Forms.Primitives.dll"
 #r "Microsoft.Win32.SystemEvents.dll"
