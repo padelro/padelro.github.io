@@ -20,6 +20,7 @@ nuget FSharpx.Collections
 nuget FSharp.Collections.ParallelSeq
 nuget Elmish
 nuget Fable.React
+nuget Fable.React.Types
 nuget Akka prerelease
 nuget Akka.FSharp prerelease
 nuget Akkling prerelease

@@ -1,7 +1,7 @@
 open System
 
 #if INTERACTIVE
-#load ".paket/load/main.group.fsx"
+#load ".paket/load/net9.0/main.group.fsx"
 #endif
 
 open Fable.React
@@ -123,6 +123,7 @@ let template htmlBody =
             meta [ Props.Name "viewport"; Props.Content "width=device-width, height=device-height, user-scalable=no, initial-scale=1.0" ]
             meta [ Props.Name "charset"; Props.Content "utf-8" ]
             link [ Props.Rel "shortcut icon"; Props.Href "favicon.ico" ]
+            meta [ Props.Name "description"; Props.Content "dotnet 9"]
 
             title [] [ str "Padel" ]
 
@@ -130,28 +131,28 @@ let template htmlBody =
             style [] [ RawText CSS_LOGO ]
         ]
 
-        header [] [
-            logo
-            section [ Props.Id "main" ] [
-                h1 [ Props.Id "title" ] [ str "🕳️" ]
-                nav [] [
-                    ul [] [
-                        li [] [ a [ Props.Href HOME_URL ] [ str "TODO" ] ]
+        body [] [
+            header [] [
+                logo
+                section [ Props.Id "main" ] [
+                    h1 [ Props.Id "title" ] [ str "🕳️" ]
+                    nav [] [
+                        ul [] [
+                            li [] [ a [ Props.Href HOME_URL ] [ str "TODO" ] ]
+                        ]
                     ]
                 ]
             ]
-        ]
 
-        body [] [
             main [] htmlBody
-        ]
 
-        footer [] [
-            small [] [
-                RawText "&copy;"
-                str <| sprintf "%i META" DateTime.Now.Year
-                RawText "&nbsp;|&nbsp;"
-                a [ Props.Href HOME_URL ] [ str "padelro.github.io" ]
+            footer [] [
+                small [] [
+                    RawText "&copy;"
+                    str <| sprintf "%i META" DateTime.Now.Year
+                    RawText "&nbsp;|&nbsp;"
+                    a [ Props.Href HOME_URL ] [ str "padelro.github.io" ]
+                ]
             ]
         ]
     ]
